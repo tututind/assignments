@@ -1,0 +1,1023 @@
+---
+title: 'Geospatial Risk Modeling: Predictive Policing in Chicago'
+author: "Tutut Indriaty"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '2'
+  html_document:
+    toc: true
+    theme: united
+    number_Sections: true
+    toc_float: true
+    toc_depth: 2
+    code_folding: hide
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# Introduction
+
+**Predictive policing** is a public sector machine learning algorithm
+used to anticipate, prevent, and respond to future crimes more
+effectively by analyzing crime-related data. Predicting future crime is
+performed by geospatial risk model, a regression model which uses
+variables that can help predicting risks of crime happening in the
+neighborhood in the future. My outcome of interest for this modeling is
+predicting future assaults in the city of Chicago, especially simple
+assaults. **Simple assault** counts when someone knowingly causes
+someone else reasonably scared of being hit, such as threats or
+perceived threat of harm. Simple assaults may not cause physical harm
+directly but still have a significant impact on the sense of safety and
+well-being of people. Simple assault also is the most reported assault
+in Chicago.
+
+However, choosing simple assaults can result in **many biases**. Starts
+from underreporting, when talking about simple assaults, the physical
+proof is none. Many people will choose not to report as they do not have
+"proofs" or a few of them think (which already makes this clearly
+biased) that it is not serious enough to be reported. After that,
+different backgrounds, like racial, cultural, and socio-economic can
+produce bias data as the wealthier and the more empowered communities
+report more than the marginalized ones. Lastly, **the choice of
+predictors**, which we will discuss further, can lead to bias if it is
+not apply uniformly across all areas.
+
+# Chicago City and Simple Assaults
+
+<!-- -->
+
+**a. Setup**
+
+I start with loading all the library packages needed for this modeling
+process.
+
+```{r setup, warning = FALSE, message = FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+
+library(tidyverse)
+library(sf)
+library(RSocrata)
+library(viridis)
+library(spatstat.explore)
+library(raster)
+library(spdep)
+library(FNN)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(knitr)
+library(kableExtra)
+library(tidycensus)
+library(tidyr)
+library(dplyr)
+library(broom)
+library(classInt)
+root.dir = "https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/DATA/"
+source("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/functions.r")
+
+```
+
+**b. Outcome of Interest: Simple Assaults as Dependent Variable**
+
+The data of simple assaults of 2017 is taken from open data of the City
+of Chicago ([data.cityofchicago.org](data.cityofchicago.org)). The
+results as shown in the maps display **many of reports** of the assault
+happening across Chicago with some concentrations in the **city center,
+on the west part of the city, and on the south part.**
+
+```{r wrangle, results='hide', warning = FALSE, message = FALSE}
+assaults <-
+  read.socrata("https://data.cityofchicago.org/Public-Safety/Crimes-2017/d62x-nvdr") %>% 
+    filter(Primary.Type == "ASSAULT" & Description == "SIMPLE") %>%
+    mutate(x = gsub("[()]", "", Location)) %>%
+    separate(x,into= c("Y","X"), sep=",") %>%
+    mutate(X = as.numeric(X),Y = as.numeric(Y)) %>% 
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant")%>%
+    st_transform('ESRI:102271') %>% 
+    distinct()
+
+chicagoBoundary <- 
+  st_read(file.path(root.dir,"/Chapter5/chicagoBoundary.geojson")) %>%
+  st_transform('ESRI:102271')
+
+assaults_clipped <- st_intersection(assaults, chicagoBoundary)
+```
+
+```{r chicagoboundary, results='hide', warning = FALSE, message = FALSE}
+grid.arrange(ncol = 2,
+  ggplot() + 
+    geom_sf(data = chicagoBoundary, fill = "lightblue", color = "black") + 
+    geom_sf(data = assaults_clipped, colour = "red", size = 0.3, show.legend = "point", alpha = 0.6) + 
+    labs(title = "Assaults in Chicago - 2017") +
+    mapTheme(title_size = 12) +
+    theme(
+      panel.background = element_rect(fill = "white"),
+      plot.title = element_text(hjust = 0.5, face = "bold"),
+      axis.text = element_blank(),
+      axis.ticks = element_blank()),
+  ggplot() + 
+    geom_sf(data = chicagoBoundary, fill = "grey20", color = "white") + 
+    stat_density2d(
+      data = data.frame(st_coordinates(assaults)), 
+      aes(X, Y, fill = ..level.., alpha = ..level..), 
+      size = 0.2, bins = 40, geom = 'polygon') + 
+    scale_fill_viridis(option = "plasma", direction = -1) + 
+    scale_alpha(range = c(0.00, 0.5), guide = FALSE) + 
+    labs(title = "Density of Assaults") +
+    mapTheme(title_size = 12) +
+    theme(
+      legend.position = c(0.15, 0.125),
+      legend.title = element_text(size = 4),
+      legend.text = element_text(size = 4),
+      legend.key.width = unit(1, "cm"),
+      legend.key.height = unit(0.25, "cm"),
+      legend.background = element_rect(fill = alpha('white', 0.7), color = NA),
+      panel.background = element_rect(fill = "white"),
+      plot.title = element_text(hjust = 0.5, face = "bold"),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid.major = element_line(),
+      panel.grid.minor = element_blank()))
+```
+
+Using the fishnet grid, we could see the number of assaults per grid
+cell. The map below shows that **most assaults happen in the city
+center** with one grid cell of 500 m x 500 m showing assault numbers
+above 60 , followed by the south part with the most is in the range of
+40 to 60 assaults and the west part of the city with the most is in the
+range of 20 to 40 assaults. From this we also recognize that the
+assaults are clustering.
+
+```{r fishnet, results='hide', warning = FALSE, message = FALSE}
+fishnet <- 
+  st_make_grid(chicagoBoundary,
+               cellsize = 500, 
+               square = TRUE) %>%
+  .[chicagoBoundary] %>%
+  st_sf() %>%
+  mutate(uniqueID = 1:n())
+crime_net <- 
+  dplyr::select(assaults_clipped) %>% 
+  mutate(countAssaults = 1) %>% 
+  aggregate(., fishnet, sum) %>%
+  mutate(countAssaults = replace_na(countAssaults, 0),
+         uniqueID = 1:n(),
+         cvID = sample(round(nrow(fishnet) / 24), 
+                       size=nrow(fishnet), replace = TRUE))
+
+
+grid.arrange(ncol = 2,
+ggplot() +
+  geom_sf(data = chicagoBoundary, fill = "white", color = "grey") +
+  geom_sf(data = fishnet, color = "black", fill = NA, alpha = 0.7) +
+  labs(title = "Fishnet Grid over Chicago",
+       subtitle = "Grid cell size: 500m x 500m") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5, size = 8),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank()),
+ggplot() +
+  geom_sf(data = crime_net, aes(fill = countAssaults), color = NA) +
+  geom_sf(data = fishnet, color = "black", fill = NA, alpha = 0.7) +
+  scale_fill_viridis(option = "plasma", direction = -1, name = "Assaults Count", 
+                     guide = guide_colorbar(barwidth = 0.5, barheight = 4)) + 
+  labs(title = "Assaults per Grid Cell", subtitle = "Based on fishnet grid") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5, size = 8),
+    legend.direction = "vertical",
+    legend.position = c(0.15, 0.125),
+    legend.title = element_text(size = 4),
+    legend.text = element_text(size = 4),
+    legend.key.width = unit(0.25, "cm"),
+    legend.key.height = unit(2, "cm"),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank()))
+```
+
+# Risk Factors as Independent Variables
+
+**a. Chosen Risk Factors**
+
+The **risk factors** chosen for simple assaults are:
+
+-   **Metra stations** which is Chicago's rail network as public places
+    where legal authorities are not around every time and are mostly
+    underground,
+
+-   **CCTV or POD (Police Observation Device) camera** as one of the
+    supposedly proofs of what happened in the location of crime,
+
+-   **Street Lights Out** which is the complaints of people in the
+    neighborhoods of street lights not functioned properly or broken as
+    an opportunity of crime taking place in the dark, and
+
+-   **Liquor Retail** as places that can possibly sell liquor almost 24
+    hours and open in all neighborhoods not just the big ones with many
+    people may possibly be gathering, high-stress, drunk, and
+    half-conscious.
+
+We clean and wrangle the data like choosing useful fields, transforming
+into the same projections as the dependent variable and combining the
+factors with the assaults data. The small multiple maps below show the
+two risk factors of Liquor Retails and Street Lights Out spread across
+Chicago city and the other two of Metro Stops and POD Cameras clustered
+in some areas that can lead to prediction bias.
+
+```{r riskfactors, results='hide', warning = FALSE, message = FALSE}
+metraStops <- st_read("data/MetraStations.shp") %>%
+                filter(MUNICIPALI == "Chicago") %>%
+                st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+                st_transform(st_crs(fishnet)) %>%
+                dplyr::select(geometry) %>%
+                mutate(Legend = "Metra Stops")
+metraStops <-  st_cast(metraStops, "POINT")
+
+cctv <- st_read("data/chicago_pod_cameras_031816.geojson") %>%
+          st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+          st_transform(st_crs(fishnet)) %>%
+          dplyr::select(geometry) %>%
+          mutate(Legend = "POD Cameras")
+
+streetLightsOut <- 
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Street-Lights-All-Out/zuxi-7xem") %>%
+    mutate(year = substr(creation_date,1,4)) %>% filter(year == "2017") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Street_Lights_Out")
+
+liquorRetail <- 
+  read.socrata("https://data.cityofchicago.org/resource/nrmj-3kcf.json") %>%  
+    filter(business_activity == "Retail Sales of Packaged Liquor") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Liquor_Retail")
+
+neighborhoods <- 
+  st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
+  st_transform(st_crs(fishnet)) 
+
+combined_sf <- rbind(metraStops, cctv, streetLightsOut, liquorRetail)
+
+chicago_base_map <- ggplot() +
+  geom_sf(data = chicagoBoundary, fill = "white", color = "black") +
+  theme_void()
+
+combined_map <- chicago_base_map +
+  geom_sf(data = combined_sf, aes(color = Legend), size = 0.25, alpha = 0.7) +
+  facet_wrap(~ Legend) +
+  labs(title = "Risk Factors, Points") +
+  theme(legend.position = "none", 
+        strip.background = element_rect(fill = "gray"),
+        strip.text = element_text(size = 10, face = "bold"))
+
+print(combined_map)
+```
+
+For these maps, the risk factors are combined with fishnet grid data
+therefore displaying the variables in grid cell with lighter colors as
+the areas with the most appeared factors. **Metra Stops map will
+probably show bias as the covered areas are not many** therefore can
+lead to a believe that the other areas without them are safer/less risk.
+It also applies to Liquor Retail and POD Cameras.
+
+```{r riskfactors2, results='hide', warning = FALSE, message = FALSE}
+vars_net <- combined_sf %>%
+  st_join(fishnet, join=st_within) %>%
+  st_drop_geometry() %>%
+  group_by(uniqueID, Legend) %>%
+  summarize(count = n()) %>%
+  left_join(fishnet, ., by = "uniqueID") %>%
+  spread(Legend, count, fill=0) %>%
+  dplyr::select(-`<NA>`) %>%
+  ungroup()
+
+vars_net.long <- 
+  gather(vars_net, Variable, value, -geometry, -uniqueID)
+
+vars <- unique(vars_net.long$Variable)
+mapList <- list()
+
+for(i in vars){
+  mapList[[i]] <- 
+    ggplot() +
+      geom_sf(data = filter(vars_net.long, Variable == i), aes(fill=value), colour=NA) +
+      scale_fill_viridis(option = "plasma", name="") +
+      labs(title=i) +
+      mapTheme()}
+
+do.call(grid.arrange,c(mapList, ncol=2, top="Risk Factors by Fishnet"))
+
+
+```
+
+**b. Correlative Analysis**
+
+To know the correlation between dependent and independent variables, we
+use **scatterplots** to see the relation. According to the scatterplots
+below, all independent variables have positive relations with the
+dependent variable. **It is interesting especially for the risk factor
+of number of POD Cameras**. As the number of POD cameras increase, the
+number of the assault also increase. This could happen because of the
+areas crime history which resulted in the camera installment for the
+high-risk areas.
+
+```{r scatterplots, results='hide', warning = FALSE, message = FALSE}
+combined <- cbind(crime_net, vars_net) %>%
+            dplyr::select(countAssaults, uniqueID, cvID, Liquor_Retail,
+                          Metra.Stops, POD.Cameras, Street_Lights_Out) %>%
+            st_drop_geometry()
+
+#MetraStops
+plot1 <- ggplot(combined, aes(x = `Metra.Stops`, y = `countAssaults`)) + 
+  geom_point(color = "dodgerblue", alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed") +
+  labs(
+    title = "Metra Stops vs Assaults Count",  
+    x = "Metra Stops",
+    y = "Number of Assaults",
+    caption = "Figure 3. Relationship between Metra Stops and Assaults Count"
+  ) + 
+  scale_y_continuous() + 
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 10, color = "darkblue"),
+    plot.caption = element_text(hjust = 1, face = "italic", size = 4, color = "darkgray"),
+    axis.title.x = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.title.y = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.text = element_text(size = 6, color = "black"),
+    panel.grid.major = element_line(color = "lightgray", linetype = "dashed"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+#Liquor Retail
+plot2 <- ggplot(combined, aes(x = `Liquor_Retail`, y = `countAssaults`)) + 
+  geom_point(color = "dodgerblue", alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed") +
+  labs(
+    title = "Liquor Retail vs Assaults Count",  
+    x = "Number of Liquor Retail",
+    y = "Number of Assaults",
+    caption = "Figure 3. Relationship between Liquor Retail and Assaults Count"
+  ) + 
+  scale_y_continuous() +
+  scale_x_continuous(breaks = scales::pretty_breaks(5)) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 10, color = "darkblue"),
+    plot.caption = element_text(hjust = 1, face = "italic", size = 4, color = "darkgray"),
+    axis.title.x = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.title.y = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.text = element_text(size = 6, color = "black"),
+    panel.grid.major = element_line(color = "lightgray", linetype = "dashed"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+#POD Cameras
+plot3 <-ggplot(combined, aes(x = `POD.Cameras`, y = `countAssaults`)) + 
+  geom_point(color = "dodgerblue", alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed") +
+  labs(
+    title = "POD Cameras vs Assaults Count",  
+    x = "Number of Cameras",
+    y = "Number of Assaults",
+    caption = "Figure 3. Relationship between POD Camera and Assaults Count"
+  ) + 
+  scale_y_continuous() +
+  scale_x_continuous() + 
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 10, color = "darkred"),
+    plot.caption = element_text(hjust = 1, face = "italic", size = 4, color = "darkgray"),
+    axis.title.x = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.title.y = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.text = element_text(size = 6, color = "black"),
+    panel.grid.major = element_line(color = "lightgray", linetype = "dashed"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+#Street Lights Out
+plot4 <- ggplot(combined, aes(x = `Street_Lights_Out`, y = `countAssaults`)) + 
+  geom_point(color = "dodgerblue", alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed") +
+  labs(
+    title = "Street Lights Out vs Assaults Count",  
+    x = "Number of Street Lights Out",
+    y = "Number of Assaults",
+    caption = "Figure 3. Relationship between Street Lights Out and Assaults Count"
+  ) + 
+  scale_y_continuous() +
+  scale_x_continuous() + 
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 10, color = "darkgreen"),
+    plot.caption = element_text(hjust = 1, face = "italic", size = 4, color = "darkgray"),
+    axis.title.x = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.title.y = element_text(face = "bold", color = "darkblue", size = 6),
+    axis.text = element_text(size = 6, color = "black"),
+    panel.grid.major = element_line(color = "lightgray", linetype = "dashed"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
+
+```
+
+**c. Feature Engineering**
+
+First, we use nearest neighbor feature to check exposures by distance.
+By choosing k=3, the maps will show the **3 nearest neighboring points**
+and use those to calculate the proximity to certain risk factors.The
+maps below show four independent variables and the distance from each
+grid cell to its nearest variables each. We can see **most of the areas
+for all variables are in the lowest range of average distance**. For POD
+Cameras, it shows the least exposures are only on the most northern and
+southern part of Chicago. For Liquor retail and street lights out, the
+least exposure is in the most southern part of Chicago. For Metra Stops,
+the least exposure is when it is far from metra stops.
+
+```{r vars, results='hide', warning = FALSE, message = FALSE}
+st_c <- st_coordinates
+st_coid <- st_centroid
+
+vars_net <-
+  vars_net %>%
+    mutate(
+      cctv.nn =
+        nn_function(st_c(st_coid(vars_net)), st_c(cctv),3),
+      Liquor_Retail.nn =
+        nn_function(st_c(st_coid(vars_net)), st_c(liquorRetail),3),
+      Street_Lights_Out.nn =
+        nn_function(st_c(st_coid(vars_net)), st_c(streetLightsOut),3),
+      metraStops.nn =
+        nn_function(st_c(st_coid(vars_net)), st_c(metraStops),3))
+
+vars_net.long.nn <- 
+  dplyr::select(vars_net, ends_with(".nn")) %>%
+    gather(Variable, value, -geometry)
+
+vars <- unique(vars_net.long.nn$Variable)
+mapList <- list()
+
+for(i in vars){
+  mapList[[i]] <- 
+    ggplot() +
+      geom_sf(data = filter(vars_net.long.nn, Variable == i), aes(fill=value), colour=NA) +
+      scale_fill_viridis(name="") +
+      labs(title=i) +
+      mapTheme()}
+
+do.call(grid.arrange,c(mapList, ncol = 2, top = "Nearest Neighbor risk Factors by Fishnet"))
+```
+
+Second, we use Euclidean Distance to the loop which means the distance
+to the city center of Chicago. The map also shows **the closer we are to
+the city center, the higher the exposure of crime we have.**
+
+```{r loop, results='hide', warning = FALSE, message = FALSE}
+loopPoint <-
+  filter(neighborhoods, name == "Loop") %>%
+  st_centroid()
+
+vars_net$loopDistance =
+  st_distance(st_centroid(vars_net),loopPoint) %>%
+  as.numeric() 
+
+ggplot() +
+  geom_sf(data = vars_net, aes(fill = loopDistance), color = NA) +
+  scale_fill_viridis_c(option = "plasma", name = "Distance to Loop (m)") +
+  labs(title = "Euclidean Distance to the Loop", 
+       caption = "Distance measured in meters") +
+  theme_minimal() +
+  theme(legend.position = "right",
+        plot.title = element_text(hjust = 0.5))
+```
+
+Lastly, we use Police District and Neighborhoods data to be joined with
+the dependent and independent variables for regression model.
+
+```{r finalnet, results='hide', warning = FALSE, message = FALSE}
+final_net <-
+  left_join(crime_net, st_drop_geometry(vars_net), by="uniqueID") 
+
+policeDistricts <- 
+  st_read("https://data.cityofchicago.org/api/geospatial/fthy-xz3r?method=export&format=GeoJSON") %>%
+  st_transform('ESRI:102271') %>%
+  dplyr::select(District = dist_num)
+
+final_net <-
+  st_centroid(final_net) %>%
+    st_join(dplyr::select(neighborhoods, name)) %>%
+    st_join(dplyr::select(policeDistricts, District)) %>%
+      st_drop_geometry() %>%
+      left_join(dplyr::select(final_net, geometry, uniqueID)) %>%
+      st_sf() %>%
+  na.omit()
+
+grid.arrange(ncol=2,
+ggplot() +
+      geom_sf(data = final_net, aes(fill=District)) +
+       scale_fill_viridis_d(option = "plasma") +
+      labs(title="Police Districts") +
+      mapTheme()+
+      theme(legend.position = "none"),
+
+ggplot() +
+      geom_sf(data = final_net, aes(fill=name)) +
+       scale_fill_viridis_d(option = "plasma") +
+      labs(title="Neighborhoods") +
+      mapTheme()+
+      theme(legend.position = "none"))
+```
+
+# Local Moran's I
+
+We use local moran's I to assess spatial autocorrelation at a local
+level and identify clusters or outliers in the spatial distribution of
+variables. This detects hotspots (clusters of high values), coldspots
+(clusters of low values), and spatial outliers (areas where a location
+has a value that is significantly different from its neighbors).
+
+The result for Local Moran's I map above display **hotspots (brighter
+color) meaning high crime rate surrounded by other high-crime areas,
+which is in the city center.** For P-Value map and significant hotspots,
+we will talk about that further.
+
+This information is useful to realize that a model needs to be
+generalizable therefore it can predict equally well in the hotspots and
+in the coldspots. We can see from **assaults count map and significant
+hotspots that they align which means a possible good generalization**.
+
+```{r moransi, results='hide', warning = FALSE, message = FALSE}
+final_net.nb <- poly2nb(as_Spatial(final_net), queen=TRUE)
+final_net.weights <- nb2listw(final_net.nb, style="W", zero.policy=TRUE)
+
+print(final_net.weights, zero.policy=TRUE)
+
+local_morans <- localmoran(final_net$countAssaults, final_net.weights, zero.policy=TRUE) %>%                 as.data.frame()
+
+# join local Moran's I results to fishnet
+final_net.localMorans <- 
+  cbind(local_morans, as.data.frame(final_net)) %>% 
+  st_sf() %>%
+  dplyr::select(Assaults_Count = countAssaults, 
+                Local_Morans_I = Ii, 
+                P_Value = `Pr(z != E(Ii))`) %>%
+  mutate(Significant_Hotspots = ifelse(P_Value <= 0.001, 1, 0)) %>%
+  gather(Variable, Value, -geometry)
+
+vars <- unique(final_net.localMorans$Variable)
+varList <- list()
+
+for(i in vars){
+  varList[[i]] <- 
+    ggplot() +
+      geom_sf(data = filter(final_net.localMorans, Variable == i), 
+              aes(fill = Value), colour=NA) +
+      scale_fill_viridis(option = "plasma", name="") +
+      labs(title=i) +
+      mapTheme() + theme(legend.position="bottom")}
+
+do.call(grid.arrange,c(varList, ncol = 4, top = "Local Morans I statistics, Assaults"))
+```
+
+We distribute the significance which is shown by the p-value to 4
+different categories. For the p-value nearing 0.1, the significant
+hotspots increase. This means that **more hotspots are insignificant
+with the clusters and the observed local Moran's I statistic is likely
+due to random chance**.
+
+```{r sig, results='hide', warning = FALSE, message = FALSE}
+final_net.localMoransbypval <- 
+  cbind(local_morans, as.data.frame(final_net)) %>% 
+  st_sf() %>%
+  dplyr::select(Assaults_Count = countAssaults, 
+                Local_Morans_I = Ii, 
+                P_Value = `Pr(z != E(Ii))`) %>%
+  mutate(Significant_Hotspots0.1 = ifelse(P_Value <= 0.1 , 1, 0)) %>%
+  mutate(Significant_Hotspots0.001 = ifelse(P_Value <= 0.001 , 1, 0)) %>%  
+  mutate(Significant_Hotspots0.00001 = ifelse(P_Value <= 0.00001 , 1, 0)) %>%  
+  mutate(Significant_Hotspots0.0000001 = ifelse(P_Value <= 0.0000001, 1, 0)) %>%  
+  gather(Variable, Value, -geometry)
+
+final_net.localMoransbypval <- subset(final_net.localMoransbypval, grepl("Significant_Hotspots", Variable)) 
+
+custom_labels <- c("Significant_Hotspots0.1" = "0.1", 
+                   "Significant_Hotspots0.001" = "0.001",
+                   "Significant_Hotspots0.00001" = "0.00001",
+                   "Significant_Hotspots0.0000001" = "0.0000001")
+
+ggplot() +
+      geom_sf(data = final_net.localMoransbypval, 
+              aes(fill = Value), colour=NA) +
+      scale_fill_viridis(option = "plasma", name="") +
+      labs(title="Assaults Hotspots of Varing Significance") +
+      facet_wrap(~Variable, ncol=4, labeller = labeller(Variable = custom_labels))+
+      mapTheme(title_size = 14) + theme(legend.position="none")
+```
+
+The map below shows average nearest neighbor distance from each cell
+centroid to its nearest significant cluster. We use only the significant
+hotspots with p-value less than 0.001. **The highest average distance**
+is only **in the most southern and northern part of the city** which
+**aligns** with ithaving **the least exposure of crime from nearest
+neighbor feature**.
+
+```{r sigmap, results='hide', warning = FALSE, message = FALSE}
+final_net <- final_net %>% 
+  mutate(assaultscount.isSig = 
+           ifelse(local_morans[,5] <= 0.001, 1, 0)) %>%
+  mutate(assaultscount.isSig.dist = 
+           nn_function(st_coordinates(st_centroid(final_net)),
+                       st_coordinates(st_centroid(filter(final_net, 
+                                           assaultscount.isSig == 1))), 
+                       k = 1))
+
+ggplot() +
+      geom_sf(data = final_net, aes(fill=assaultscount.isSig.dist), colour=NA) +
+      scale_fill_viridis(option = "plasma", name="NN Distance") +
+      labs(title="Distance to highly significant assaults hotspots") +
+      mapTheme()
+```
+
+# Modeling and Cross-Validation
+
+We use geospatial risk modeling to predict future possible crime and
+cross-validation to get the most accurate model.
+
+**a. Choosing Models**
+
+I choose the model with removing one of the independent variables one by
+one and use cross-validation to count Mean Absolute Error (MAE). **The
+lowest the MAE, the better the model**.
+
+The result below shows t**he lowest MAE is interestingly when we remove
+the Liquor Retail variable**. Because the difference is not big enough,
+I choose to continue using the model with four independent variables.
+
+```{r models, results='hide', warning = FALSE, message = FALSE}
+reg.vars.full <- c("cctv.nn", "Street_Lights_Out.nn", "Liquor_Retail.nn", "metraStops.nn", "loopDistance")
+
+reg.vars.no_cctv <- setdiff(reg.vars.full, "cctv.nn")
+reg.vars.no_street_lights <- setdiff(reg.vars.full, "Street_Lights_Out.nn")
+reg.vars.no_liquor <- setdiff(reg.vars.full, "Liquor_Retail.nn")
+reg.vars.no_metra <- setdiff(reg.vars.full, "metraStops.nn")
+
+models <- list(
+  "Full Model" = reg.vars.full,
+  "No CCTV" = reg.vars.no_cctv,
+  "No Street Lights" = reg.vars.no_street_lights,
+  "No Liquor Retail" = reg.vars.no_liquor,
+  "No Metra Stops" = reg.vars.no_metra
+)
+
+model_results <- lapply(names(models), function(model_name) {
+  vars <- models[[model_name]]
+  model_cv <- crossValidate(
+    dataset = final_net,
+    id = "name",
+    dependentVariable = "countAssaults",
+    indVariables = vars
+  ) %>%
+    dplyr::select(cvID = name, countAssaults, Prediction, geometry)
+  model_summary <- model_cv %>%
+    mutate(Error = Prediction - countAssaults) %>%
+    summarize(
+      MAE = mean(abs(Error), na.rm = TRUE)
+    )
+  return(data.frame(Model = model_name, MAE = model_summary$MAE))
+})
+
+model_results_df <- do.call(rbind, model_results)
+
+model_results_df %>%
+  kable(caption = "Comparison of MAE for Different Models") %>%
+  kable_styling("striped", full_width = F)
+
+```
+
+**b. Final Model and Accuracy**
+
+Using the final model with four independent variables, loop distance,
+and the average distance of significant hotspots, we cross-validate the
+model to see the accuracy of the model.
+
+```{r finalmodel, results='hide', warning = FALSE, message = FALSE}
+reg.vars <- c("cctv.nn", "Street_Lights_Out.nn", "Liquor_Retail.nn",
+              "metraStops.nn", "loopDistance")
+
+reg.ss.vars <- c("cctv.nn", "Street_Lights_Out.nn", "Liquor_Retail.nn",
+                 "metraStops.nn", "loopDistance", "assaultscount.isSig",
+                 "assaultscount.isSig.dist")
+
+reg.spatialCV <- crossValidate(
+  dataset = final_net,
+  id = "name",
+  dependentVariable = "countAssaults",
+  indVariables = reg.vars) %>%
+    dplyr::select(cvID = name, countAssaults, Prediction, geometry)
+
+reg.ss.spatialCV <- crossValidate(
+  dataset = final_net,
+  id = "name",                           
+  dependentVariable = "countAssaults",
+  indVariables = reg.ss.vars) %>%
+    dplyr::select(cvID = name, countAssaults, Prediction, geometry)
+
+
+reg.summary <- 
+  rbind(
+    mutate(reg.spatialCV,    Error = Prediction - countAssaults,
+                             Regression = "Spatial LOGO-CV: Just Risk Factors"),
+                             
+    mutate(reg.ss.spatialCV, Error = Prediction - countAssaults,
+                             Regression = "Spatial LOGO-CV: Spatial Process")) %>%
+    st_sf() 
+```
+
+The errors are shown by Mean Error, Mean Absolute Error, and Standard
+Deviation of Mean Absolute Error. The histogram below shows the
+distribution of MAE for the cross-validation of just risk factors and
+the one with the spatial process. There is a difference between the two
+histogram that will show the importance of spatial process in this
+model. I will write further by the map and table.
+
+```{r errors, results='hide', warning = FALSE, message = FALSE}
+error_by_reg_and_fold <- 
+  reg.summary %>%
+    group_by(Regression, cvID) %>% 
+    summarize(Mean_Error = mean(Prediction - countAssaults, na.rm = T),
+              MAE = mean(abs(Mean_Error), na.rm = T),
+              SD_MAE = mean(abs(Mean_Error), na.rm = T)) %>%
+  ungroup()
+
+error_by_reg_and_fold %>%
+  ggplot(aes(MAE)) + 
+    geom_histogram(bins = 30, colour="black", fill = "#FDE725FF") +
+    facet_wrap(~Regression) +  
+    geom_vline(xintercept = 0) + scale_x_continuous(breaks = seq(0, 8, by = 1)) + 
+    labs(title="Distribution of MAE", subtitle = "LOGO-CV",
+         x="Mean Absolute Error", y="Count") +
+    plotTheme()
+```
+
+The maps below show l**ower MAE for the model with spatial process which
+means better model** and the spatial feature plays an **important role**
+in the prediction.
+
+```{r maperror, results='hide', warning = FALSE, message = FALSE}
+error_by_reg_and_fold %>%
+  filter(str_detect(Regression, "LOGO")) %>%
+  ggplot() +
+    geom_sf(aes(fill = MAE)) +
+    facet_wrap(~Regression) +
+    scale_fill_viridis(option = "plasma") +
+    labs(title = "Assaults errors by LOGO-CV Regression") +
+    mapTheme() + theme(legend.position="bottom")
+```
+
+The table below also shows the mean of MAE and standard deviation of MAE
+for the model including spatial process are lower than the model with
+just risk factors. The **lower standard deviation** shows that the
+latter model is **more stable and reliable for predicting** despite any
+neighborhood conditions.
+
+```{r tableerror, results='hide', warning = FALSE, message = FALSE}
+st_drop_geometry(error_by_reg_and_fold) %>%
+  group_by(Regression) %>% 
+    summarize(Mean_MAE = round(mean(MAE), 2),
+              SD_MAE = round(sd(MAE), 2)) %>%
+  kable() %>%
+    kable_styling("striped", full_width = F)
+```
+
+**c. Neighborhood Racial Context**
+
+Using ACS 5-year estimate data to get racial data of the neighborhood,
+we do regression with the two models from before. Shown in the table
+below, the mean errors in both regressions for non-white are minus which
+mean **the model is underestimating the number of assaults occurring in
+areas with non-white** majority. The model's predictions are generally
+lower than the actual observed values of assaults in these
+neighborhoods. This result shows another **bias** in the model.
+
+```{r 2018, results='hide', warning = FALSE, message = FALSE}
+tracts18 <- 
+  get_acs(geography = "tract", variables = c("B01001_001E","B01001A_001E"), 
+          year = 2018, state=17, county=031, geometry=T) %>%
+  st_transform('ESRI:102271')  %>% 
+  dplyr::select(variable, estimate, GEOID) %>%
+  spread(variable, estimate) %>%
+  rename(TotalPop = B01001_001,
+         NumberWhites = B01001A_001) %>%
+  mutate(percentWhite = NumberWhites / TotalPop,
+         raceContext = ifelse(percentWhite > .5, "Majority_White", "Majority_Non_White")) %>%
+  .[neighborhoods,]
+
+reg.summary %>% 
+  filter(str_detect(Regression, "LOGO")) %>%
+    st_centroid() %>%
+    st_join(tracts18) %>%
+    na.omit() %>%
+      st_drop_geometry() %>%
+      group_by(Regression, raceContext) %>%
+      summarize(mean.Error = mean(Error, na.rm = T)) %>%
+      spread(raceContext, mean.Error) %>%
+      kable(caption = "Mean Error by neighborhood racial context") %>%
+        kable_styling("striped", full_width = F) 
+
+
+```
+
+# Kernel's Density and Model Prediction
+
+**a. Kernel's Density**
+
+Kernel's Density is another tool to show distribution of data. In this
+case, we use three different search radius (1000 ft, 1500 ft, and 2000
+ft) to see the density of the number of assaults in the city of Chicago.
+
+The maps below show more clustered hotspots within 1000 ft and less
+clustered hotspots within 2000 ft. These maps also show spatial pattern
+with a smaller radius highlighting localized hotspots, while a larger
+radius highlighting broader patterns and trends. This can help make
+decisions about **resource allocation and intervention strategies**.
+
+```{r KD, results='hide', warning = FALSE, message = FALSE}
+assa_ppp <- as.ppp(st_coordinates(assaults_clipped), W = st_bbox(final_net))
+assa_KD.1000 <- spatstat.explore::density.ppp(assa_ppp, 1000)
+assa_KD.1500 <- spatstat.explore::density.ppp(assa_ppp, 1500)
+assa_KD.2000 <- spatstat.explore::density.ppp(assa_ppp, 2000)
+assa_KD.df <- rbind(
+  mutate(data.frame(rasterToPoints(mask(raster(assa_KD.1000), as(neighborhoods, 'Spatial')))), Legend = "1000 Ft."),
+  mutate(data.frame(rasterToPoints(mask(raster(assa_KD.1500), as(neighborhoods, 'Spatial')))), Legend = "1500 Ft."),
+  mutate(data.frame(rasterToPoints(mask(raster(assa_KD.2000), as(neighborhoods, 'Spatial')))), Legend = "2000 Ft.")) 
+
+assa_KD.df$Legend <- factor(assa_KD.df$Legend, levels = c("1000 Ft.", "1500 Ft.", "2000 Ft."))
+
+ggplot(data=assa_KD.df, aes(x=x, y=y)) +
+  geom_raster(aes(fill=layer)) + 
+  facet_wrap(~Legend) +
+  coord_sf(crs=st_crs(final_net)) + 
+  scale_fill_viridis(name="Density") +
+  labs(title = "Kernel density with 3 different search radius") +
+  mapTheme(title_size = 14)
+```
+
+This map shows the density of assaults in 2017 in 1000 ft radius. The
+**hotspots** **align** with the number of assaults in the areas, such as
+**city center, west Chicago, and South Chicago**.
+
+```{r mapkd, results='hide', warning = FALSE, message = FALSE}
+as.data.frame(assa_KD.1000) %>%
+  st_as_sf(coords = c("x", "y"), crs = st_crs(final_net)) %>%
+  aggregate(., final_net, mean) %>%
+   ggplot() +
+     geom_sf(aes(fill=value)) +
+     geom_sf(data = sample_n(assaults_clipped, 1500), size = .5) +
+     scale_fill_viridis(name = "Density") +
+     labs(title = "Kernel density of 2017 Assaults") +
+     mapTheme(title_size = 14)
+```
+
+**b. Comparison with Model Prediction**
+
+Now, we compare the 2018 assaults data with the Model Prediction using
+2017 assaults data. Overall, **the highest risks (5th category)** are
+still in the three areas mentioned before: **the city center, west
+Chicago, and south Chicago**. The maps below show while there are
+similarities in a few areas, there are differences in many more areas.
+
+While the 2018 assaults show growing areas of higher risk, model
+prediction tends to show reduced highest risk areas.
+
+```{r 2018assa, results='hide', warning = FALSE, message = FALSE}
+assaults18 <- 
+  read.socrata("https://data.cityofchicago.org/Public-Safety/Crimes-2018/3i3m-jwuy") %>% 
+  filter(Primary.Type == "ASSAULT" & 
+         Description == "SIMPLE") %>%
+  mutate(x = gsub("[()]", "", Location)) %>%
+  separate(x,into= c("Y","X"), sep=",") %>%
+  mutate(X = as.numeric(X),
+         Y = as.numeric(Y)) %>% 
+  na.omit %>%
+  st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+  st_transform('ESRI:102271') %>% 
+  distinct() %>%
+  .[fishnet,]
+
+assa_KDE_sum <- as.data.frame(assa_KD.1000) %>%
+  st_as_sf(coords = c("x", "y"), crs = st_crs(final_net)) %>%
+  aggregate(., final_net, mean) 
+
+
+kde_breaks <- classIntervals(assa_KDE_sum$value, 
+                             n = 5, "fisher")
+
+
+assa_KDE_sf <- assa_KDE_sum %>%
+  mutate(label = "Kernel Density",
+         Risk_Category = classInt::findCols(kde_breaks),
+         Risk_Category = case_when(
+           Risk_Category == 5 ~ "5th",
+           Risk_Category == 4 ~ "4th",
+           Risk_Category == 3 ~ "3rd",
+           Risk_Category == 2 ~ "2nd",
+           Risk_Category == 1 ~ "1st")) %>%
+  cbind(
+    aggregate(
+      dplyr::select(assaults18) %>% mutate(assaCount = 1), ., sum) %>%
+    mutate(assaCount = replace_na(assaCount, 0))) %>%
+  dplyr::select(label, Risk_Category, assaCount)
+
+ml_breaks <- classIntervals(reg.ss.spatialCV$Prediction, 
+                             n = 5, "fisher")
+assa_risk_sf <-
+  reg.ss.spatialCV %>%
+  mutate(label = "Risk Predictions",
+         Risk_Category =classInt::findCols(ml_breaks),
+         Risk_Category = case_when(
+           Risk_Category == 5 ~ "5th",
+           Risk_Category == 4 ~ "4th",
+           Risk_Category == 3 ~ "3rd",
+           Risk_Category == 2 ~ "2nd",
+           Risk_Category == 1 ~ "1st")) %>%
+  cbind(
+    aggregate(
+      dplyr::select(assaults18) %>% mutate(assaCount = 1), ., sum) %>%
+      mutate(assaCount = replace_na(assaCount, 0))) %>%
+  dplyr::select(label,Risk_Category, assaCount)
+
+rbind(assa_KDE_sf, assa_risk_sf) %>%
+  na.omit() %>%
+  gather(Variable, Value, -label, -Risk_Category, -geometry) %>%
+  ggplot() +
+    geom_sf(aes(fill = Risk_Category), colour = NA) +
+    geom_sf(data = sample_n(assaults18, 3000), size = .5, colour = "black") +
+    facet_wrap(~label, ) +
+    scale_fill_viridis(option = "plasma", discrete = TRUE) +
+    labs(title="Comparison of Kernel Density and Risk Predictions",
+         subtitle="2018 assaults; 2017 assaults risk predictions") +
+    mapTheme(title_size = 14)
+```
+
+The graph below shows that **the prediction is not very useful for the
+highest and second-highest risk because it fails to predict** that the
+assaults will be higher rather than lower. The failure to predict higher
+assaults in these areas means a need for refining the model.
+
+```{r kdgraph, results='hide', warning = FALSE, message = FALSE}
+rbind(assa_KDE_sf, assa_risk_sf) %>%
+  st_drop_geometry() %>%
+  na.omit() %>%
+  gather(Variable, Value, -label, -Risk_Category) %>%
+  group_by(label, Risk_Category) %>%
+  summarize(countAssaults = sum(Value)) %>%
+  ungroup() %>%
+  group_by(label) %>%
+  mutate(Pcnt_of_test_set_crimes = countAssaults / sum(countAssaults)) %>%
+    ggplot(aes(Risk_Category,Pcnt_of_test_set_crimes)) +
+      geom_bar(aes(fill=label), position="dodge", stat="identity") +
+      scale_fill_viridis(option = "plasma", discrete = TRUE, name = "Model") +
+      labs(title = "Risk prediction vs. Kernel density, 2018 assaults",
+           y = "% of Test Set Assaults (per model)",
+           x = "Risk Category") +
+  theme_bw() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+```
+
+# Conclusion
+
+To conclude, I **do not recommend using the algorithm as it is** because
+it appears to fail predicting the increase assaults in the highest and
+second-highest risk areas in Chicago City. But, I **recommend using the
+modeling process.** The room for improving the model is still possible
+with adding or stronger-correlation independent variables or changing
+the existing ones here. Even though along the way, I **find some
+reliability and good generalization in some variables**. This still is
+not enough to create a useful prediction modeling.
+
+**Simple Assaults** as the chosen outcomes also is not an easy category
+of crimes to predict because of the **quite high level of bias in
+data**. But this still is important because this assault type is the
+**highest crime reports** in Chicago. **Better and stronger variables**
+need to be included in the modeling to create reliable prediction. Some
+variable ideas to add to probably improve the modeling in the future are
+religious locations, recreational places, education level, and income
+level.

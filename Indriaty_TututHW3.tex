@@ -1,0 +1,1194 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Geospatial Risk Modeling: Predictive Policing in Chicago},
+  pdfauthor={Tutut Indriaty},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Geospatial Risk Modeling: Predictive Policing in Chicago}
+\author{Tutut Indriaty}
+\date{2024-11-01}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Introduction}\label{introduction}
+
+\textbf{Predictive policing} is a public sector machine learning
+algorithm used to anticipate, prevent, and respond to future crimes more
+effectively by analyzing crime-related data. Predicting future crime is
+performed by geospatial risk model, a regression model which uses
+variables that can help predicting risks of crime happening in the
+neighborhood in the future. My outcome of interest for this modeling is
+predicting future assaults in the city of Chicago, especially simple
+assaults. \textbf{Simple assault} counts when someone knowingly causes
+someone else reasonably scared of being hit, such as threats or
+perceived threat of harm. Simple assaults may not cause physical harm
+directly but still have a significant impact on the sense of safety and
+well-being of people. Simple assault also is the most reported assault
+in Chicago.
+
+However, choosing simple assaults can result in \textbf{many biases}.
+Starts from underreporting, when talking about simple assaults, the
+physical proof is none. Many people will choose not to report as they do
+not have ``proofs'' or a few of them think (which already makes this
+clearly biased) that it is not serious enough to be reported. After
+that, different backgrounds, like racial, cultural, and socio-economic
+can produce bias data as the wealthier and the more empowered
+communities report more than the marginalized ones. Lastly, \textbf{the
+choice of predictors}, which we will discuss further, can lead to bias
+if it is not apply uniformly across all areas.
+
+\section{Chicago City and Simple
+Assaults}\label{chicago-city-and-simple-assaults}
+
+\textbf{a. Setup}
+
+I start with loading all the library packages needed for this modeling
+process.
+
+\textbf{b. Outcome of Interest: Simple Assaults as Dependent Variable}
+
+The data of simple assaults of 2017 is taken from open data of the City
+of Chicago (\url{data.cityofchicago.org}). The results as shown in the
+maps display \textbf{many of reports} of the assault happening across
+Chicago with some concentrations in the \textbf{city center, on the west
+part of the city, and on the south part.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{assaults }\OtherTok{\textless{}{-}}
+  \FunctionTok{read.socrata}\NormalTok{(}\StringTok{"https://data.cityofchicago.org/Public{-}Safety/Crimes{-}2017/d62x{-}nvdr"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{filter}\NormalTok{(Primary.Type }\SpecialCharTok{==} \StringTok{"ASSAULT"} \SpecialCharTok{\&}\NormalTok{ Description }\SpecialCharTok{==} \StringTok{"SIMPLE"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{x =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"[()]"}\NormalTok{, }\StringTok{""}\NormalTok{, Location)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{separate}\NormalTok{(x,}\AttributeTok{into=} \FunctionTok{c}\NormalTok{(}\StringTok{"Y"}\NormalTok{,}\StringTok{"X"}\NormalTok{), }\AttributeTok{sep=}\StringTok{","}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{X =} \FunctionTok{as.numeric}\NormalTok{(X),}\AttributeTok{Y =} \FunctionTok{as.numeric}\NormalTok{(Y)) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{na.omit}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{, }\AttributeTok{agr =} \StringTok{"constant"}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_transform}\NormalTok{(}\StringTok{\textquotesingle{}ESRI:102271\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{distinct}\NormalTok{()}
+
+\NormalTok{chicagoBoundary }\OtherTok{\textless{}{-}} 
+  \FunctionTok{st\_read}\NormalTok{(}\FunctionTok{file.path}\NormalTok{(root.dir,}\StringTok{"/Chapter5/chicagoBoundary.geojson"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\StringTok{\textquotesingle{}ESRI:102271\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{assaults\_clipped }\OtherTok{\textless{}{-}} \FunctionTok{st\_intersection}\NormalTok{(assaults, chicagoBoundary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{grid.arrange}\NormalTok{(}\AttributeTok{ncol =} \DecValTok{2}\NormalTok{,}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ chicagoBoundary, }\AttributeTok{fill =} \StringTok{"lightblue"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ assaults\_clipped, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{show.legend =} \StringTok{"point"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Assaults in Chicago {-} 2017"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{mapTheme}\NormalTok{(}\AttributeTok{title\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}
+      \AttributeTok{panel.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"white"}\NormalTok{),}
+      \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+      \AttributeTok{axis.text =} \FunctionTok{element\_blank}\NormalTok{(),}
+      \AttributeTok{axis.ticks =} \FunctionTok{element\_blank}\NormalTok{()),}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ chicagoBoundary, }\AttributeTok{fill =} \StringTok{"grey20"}\NormalTok{, }\AttributeTok{color =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{stat\_density2d}\NormalTok{(}
+      \AttributeTok{data =} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(assaults)), }
+      \FunctionTok{aes}\NormalTok{(X, Y, }\AttributeTok{fill =}\NormalTok{ ..level.., }\AttributeTok{alpha =}\NormalTok{ ..level..), }
+      \AttributeTok{size =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{bins =} \DecValTok{40}\NormalTok{, }\AttributeTok{geom =} \StringTok{\textquotesingle{}polygon\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{scale\_alpha}\NormalTok{(}\AttributeTok{range =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.00}\NormalTok{, }\FloatTok{0.5}\NormalTok{), }\AttributeTok{guide =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Density of Assaults"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{mapTheme}\NormalTok{(}\AttributeTok{title\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}
+      \AttributeTok{legend.position =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.15}\NormalTok{, }\FloatTok{0.125}\NormalTok{),}
+      \AttributeTok{legend.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{4}\NormalTok{),}
+      \AttributeTok{legend.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{4}\NormalTok{),}
+      \AttributeTok{legend.key.width =} \FunctionTok{unit}\NormalTok{(}\DecValTok{1}\NormalTok{, }\StringTok{"cm"}\NormalTok{),}
+      \AttributeTok{legend.key.height =} \FunctionTok{unit}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\StringTok{"cm"}\NormalTok{),}
+      \AttributeTok{legend.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \FunctionTok{alpha}\NormalTok{(}\StringTok{\textquotesingle{}white\textquotesingle{}}\NormalTok{, }\FloatTok{0.7}\NormalTok{), }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{),}
+      \AttributeTok{panel.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"white"}\NormalTok{),}
+      \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+      \AttributeTok{axis.text =} \FunctionTok{element\_blank}\NormalTok{(),}
+      \AttributeTok{axis.ticks =} \FunctionTok{element\_blank}\NormalTok{(),}
+      \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(),}
+      \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{()))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/chicagoboundary-1.pdf}
+
+Using the fishnet grid, we could see the number of assaults per grid
+cell. The map below shows that \textbf{most assaults happen in the city
+center} with one grid cell of 500 m x 500 m showing assault numbers
+above 60 , followed by the south part with the most is in the range of
+40 to 60 assaults and the west part of the city with the most is in the
+range of 20 to 40 assaults. From this we also recognize that the
+assaults are clustering.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fishnet }\OtherTok{\textless{}{-}} 
+  \FunctionTok{st\_make\_grid}\NormalTok{(chicagoBoundary,}
+               \AttributeTok{cellsize =} \DecValTok{500}\NormalTok{, }
+               \AttributeTok{square =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  .[chicagoBoundary] }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_sf}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{uniqueID =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{n}\NormalTok{())}
+\NormalTok{crime\_net }\OtherTok{\textless{}{-}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(assaults\_clipped) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{countAssaults =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{aggregate}\NormalTok{(., fishnet, sum) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{countAssaults =} \FunctionTok{replace\_na}\NormalTok{(countAssaults, }\DecValTok{0}\NormalTok{),}
+         \AttributeTok{uniqueID =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{n}\NormalTok{(),}
+         \AttributeTok{cvID =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{round}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(fishnet) }\SpecialCharTok{/} \DecValTok{24}\NormalTok{), }
+                       \AttributeTok{size=}\FunctionTok{nrow}\NormalTok{(fishnet), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{))}
+
+
+\FunctionTok{grid.arrange}\NormalTok{(}\AttributeTok{ncol =} \DecValTok{2}\NormalTok{,}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ chicagoBoundary, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{color =} \StringTok{"grey"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ fishnet, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{fill =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Fishnet Grid over Chicago"}\NormalTok{,}
+       \AttributeTok{subtitle =} \StringTok{"Grid cell size: 500m x 500m"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{axis.ticks =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{()),}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ crime\_net, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ countAssaults), }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ fishnet, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{fill =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{name =} \StringTok{"Assaults Count"}\NormalTok{, }
+                     \AttributeTok{guide =} \FunctionTok{guide\_colorbar}\NormalTok{(}\AttributeTok{barwidth =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{barheight =} \DecValTok{4}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Assaults per Grid Cell"}\NormalTok{, }\AttributeTok{subtitle =} \StringTok{"Based on fishnet grid"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{),}
+    \AttributeTok{legend.direction =} \StringTok{"vertical"}\NormalTok{,}
+    \AttributeTok{legend.position =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.15}\NormalTok{, }\FloatTok{0.125}\NormalTok{),}
+    \AttributeTok{legend.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{4}\NormalTok{),}
+    \AttributeTok{legend.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{4}\NormalTok{),}
+    \AttributeTok{legend.key.width =} \FunctionTok{unit}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\StringTok{"cm"}\NormalTok{),}
+    \AttributeTok{legend.key.height =} \FunctionTok{unit}\NormalTok{(}\DecValTok{2}\NormalTok{, }\StringTok{"cm"}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{axis.ticks =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{()))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/fishnet-1.pdf}
+
+\section{Risk Factors as Independent
+Variables}\label{risk-factors-as-independent-variables}
+
+\textbf{a. Chosen Risk Factors}
+
+The \textbf{risk factors} chosen for simple assaults are:
+
+\begin{itemize}
+\item
+  \textbf{Metra stations} which is Chicago's rail network as public
+  places where legal authorities are not around every time and are
+  mostly underground,
+\item
+  \textbf{CCTV or POD (Police Observation Device) camera} as one of the
+  supposedly proofs of what happened in the location of crime,
+\item
+  \textbf{Street Lights Out} which is the complaints of people in the
+  neighborhoods of street lights not functioned properly or broken as an
+  opportunity of crime taking place in the dark, and
+\item
+  \textbf{Liquor Retail} as places that can possibly sell liquor almost
+  24 hours and open in all neighborhoods not just the big ones with many
+  people may possibly be gathering, high-stress, drunk, and
+  half-conscious.
+\end{itemize}
+
+We clean and wrangle the data like choosing useful fields, transforming
+into the same projections as the dependent variable and combining the
+factors with the assaults data. The small multiple maps below show the
+two risk factors of Liquor Retails and Street Lights Out spread across
+Chicago city and the other two of Metro Stops and POD Cameras clustered
+in some areas that can lead to prediction bias.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{metraStops }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/MetraStations.shp"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+                \FunctionTok{filter}\NormalTok{(MUNICIPALI }\SpecialCharTok{==} \StringTok{"Chicago"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+                \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{, }\AttributeTok{agr =} \StringTok{"constant"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+                \FunctionTok{st\_transform}\NormalTok{(}\FunctionTok{st\_crs}\NormalTok{(fishnet)) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{                dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(geometry) }\SpecialCharTok{\%\textgreater{}\%}
+                \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Legend =} \StringTok{"Metra Stops"}\NormalTok{)}
+\NormalTok{metraStops }\OtherTok{\textless{}{-}}  \FunctionTok{st\_cast}\NormalTok{(metraStops, }\StringTok{"POINT"}\NormalTok{)}
+
+\NormalTok{cctv }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/chicago\_pod\_cameras\_031816.geojson"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+          \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{, }\AttributeTok{agr =} \StringTok{"constant"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+          \FunctionTok{st\_transform}\NormalTok{(}\FunctionTok{st\_crs}\NormalTok{(fishnet)) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{          dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(geometry) }\SpecialCharTok{\%\textgreater{}\%}
+          \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Legend =} \StringTok{"POD Cameras"}\NormalTok{)}
+
+\NormalTok{streetLightsOut }\OtherTok{\textless{}{-}} 
+  \FunctionTok{read.socrata}\NormalTok{(}\StringTok{"https://data.cityofchicago.org/Service{-}Requests/311{-}Service{-}Requests{-}Street{-}Lights{-}All{-}Out/zuxi{-}7xem"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{year =} \FunctionTok{substr}\NormalTok{(creation\_date,}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{==} \StringTok{"2017"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{Y =}\NormalTok{ latitude, }\AttributeTok{X =}\NormalTok{ longitude) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{na.omit}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{, }\AttributeTok{agr =} \StringTok{"constant"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_transform}\NormalTok{(}\FunctionTok{st\_crs}\NormalTok{(fishnet)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Legend =} \StringTok{"Street\_Lights\_Out"}\NormalTok{)}
+
+\NormalTok{liquorRetail }\OtherTok{\textless{}{-}} 
+  \FunctionTok{read.socrata}\NormalTok{(}\StringTok{"https://data.cityofchicago.org/resource/nrmj{-}3kcf.json"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}  
+    \FunctionTok{filter}\NormalTok{(business\_activity }\SpecialCharTok{==} \StringTok{"Retail Sales of Packaged Liquor"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{Y =}\NormalTok{ latitude, }\AttributeTok{X =}\NormalTok{ longitude) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{na.omit}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{, }\AttributeTok{agr =} \StringTok{"constant"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_transform}\NormalTok{(}\FunctionTok{st\_crs}\NormalTok{(fishnet)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Legend =} \StringTok{"Liquor\_Retail"}\NormalTok{)}
+
+\NormalTok{neighborhoods }\OtherTok{\textless{}{-}} 
+  \FunctionTok{st\_read}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\FunctionTok{st\_crs}\NormalTok{(fishnet)) }
+
+\NormalTok{combined\_sf }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(metraStops, cctv, streetLightsOut, liquorRetail)}
+
+\NormalTok{chicago\_base\_map }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ chicagoBoundary, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_void}\NormalTok{()}
+
+\NormalTok{combined\_map }\OtherTok{\textless{}{-}}\NormalTok{ chicago\_base\_map }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ combined\_sf, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ Legend), }\AttributeTok{size =} \FloatTok{0.25}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ Legend) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Risk Factors, Points"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{, }
+        \AttributeTok{strip.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"gray"}\NormalTok{),}
+        \AttributeTok{strip.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{10}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{))}
+
+\FunctionTok{print}\NormalTok{(combined\_map)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/riskfactors-1.pdf}
+
+For these maps, the risk factors are combined with fishnet grid data
+therefore displaying the variables in grid cell with lighter colors as
+the areas with the most appeared factors. \textbf{Metra Stops map will
+probably show bias as the covered areas are not many} therefore can lead
+to a believe that the other areas without them are safer/less risk. It
+also applies to Liquor Retail and POD Cameras.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vars\_net }\OtherTok{\textless{}{-}}\NormalTok{ combined\_sf }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_join}\NormalTok{(fishnet, }\AttributeTok{join=}\NormalTok{st\_within) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_drop\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(uniqueID, Legend) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(fishnet, ., }\AttributeTok{by =} \StringTok{"uniqueID"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{spread}\NormalTok{(Legend, count, }\AttributeTok{fill=}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\StringTok{\textasciigrave{}}\AttributeTok{\textless{}NA\textgreater{}}\StringTok{\textasciigrave{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{()}
+
+\NormalTok{vars\_net.long }\OtherTok{\textless{}{-}} 
+  \FunctionTok{gather}\NormalTok{(vars\_net, Variable, value, }\SpecialCharTok{{-}}\NormalTok{geometry, }\SpecialCharTok{{-}}\NormalTok{uniqueID)}
+
+\NormalTok{vars }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(vars\_net.long}\SpecialCharTok{$}\NormalTok{Variable)}
+\NormalTok{mapList }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ vars)\{}
+\NormalTok{  mapList[[i]] }\OtherTok{\textless{}{-}} 
+    \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =} \FunctionTok{filter}\NormalTok{(vars\_net.long, Variable }\SpecialCharTok{==}\NormalTok{ i), }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{value), }\AttributeTok{colour=}\ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{name=}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\NormalTok{i) }\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{()\}}
+
+\FunctionTok{do.call}\NormalTok{(grid.arrange,}\FunctionTok{c}\NormalTok{(mapList, }\AttributeTok{ncol=}\DecValTok{2}\NormalTok{, }\AttributeTok{top=}\StringTok{"Risk Factors by Fishnet"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/riskfactors2-1.pdf}
+
+\textbf{b. Correlative Analysis}
+
+To know the correlation between dependent and independent variables, we
+use \textbf{scatterplots} to see the relation. According to the
+scatterplots below, all independent variables have positive relations
+with the dependent variable. \textbf{It is interesting especially for
+the risk factor of number of POD Cameras}. As the number of POD cameras
+increase, the number of the assault also increase. This could happen
+because of the areas crime history which resulted in the camera
+installment for the high-risk areas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{combined }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(crime\_net, vars\_net) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{            dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(countAssaults, uniqueID, cvID, Liquor\_Retail,}
+\NormalTok{                          Metra.Stops, POD.Cameras, Street\_Lights\_Out) }\SpecialCharTok{\%\textgreater{}\%}
+            \FunctionTok{st\_drop\_geometry}\NormalTok{()}
+
+\CommentTok{\#MetraStops}
+\NormalTok{plot1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(combined, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \StringTok{\textasciigrave{}}\AttributeTok{Metra.Stops}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textasciigrave{}}\AttributeTok{countAssaults}\StringTok{\textasciigrave{}}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"dodgerblue"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Metra Stops vs Assaults Count"}\NormalTok{,  }
+    \AttributeTok{x =} \StringTok{"Metra Stops"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Number of Assaults"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"Figure 3. Relationship between Metra Stops and Assaults Count"}
+\NormalTok{  ) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_y\_continuous}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{),}
+    \AttributeTok{plot.caption =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkgray"}\NormalTok{),}
+    \AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"lightgray"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{plot.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{)}
+\NormalTok{  )}
+
+\CommentTok{\#Liquor Retail}
+\NormalTok{plot2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(combined, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \StringTok{\textasciigrave{}}\AttributeTok{Liquor\_Retail}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textasciigrave{}}\AttributeTok{countAssaults}\StringTok{\textasciigrave{}}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"dodgerblue"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Liquor Retail vs Assaults Count"}\NormalTok{,  }
+    \AttributeTok{x =} \StringTok{"Number of Liquor Retail"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Number of Assaults"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"Figure 3. Relationship between Liquor Retail and Assaults Count"}
+\NormalTok{  ) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_y\_continuous}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{pretty\_breaks}\NormalTok{(}\DecValTok{5}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{),}
+    \AttributeTok{plot.caption =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkgray"}\NormalTok{),}
+    \AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"lightgray"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{plot.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{)}
+\NormalTok{  )}
+
+\CommentTok{\#POD Cameras}
+\NormalTok{plot3 }\OtherTok{\textless{}{-}}\FunctionTok{ggplot}\NormalTok{(combined, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \StringTok{\textasciigrave{}}\AttributeTok{POD.Cameras}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textasciigrave{}}\AttributeTok{countAssaults}\StringTok{\textasciigrave{}}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"dodgerblue"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"POD Cameras vs Assaults Count"}\NormalTok{,  }
+    \AttributeTok{x =} \StringTok{"Number of Cameras"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Number of Assaults"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"Figure 3. Relationship between POD Camera and Assaults Count"}
+\NormalTok{  ) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_y\_continuous}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkred"}\NormalTok{),}
+    \AttributeTok{plot.caption =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkgray"}\NormalTok{),}
+    \AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"lightgray"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{plot.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{)}
+\NormalTok{  )}
+
+\CommentTok{\#Street Lights Out}
+\NormalTok{plot4 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(combined, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \StringTok{\textasciigrave{}}\AttributeTok{Street\_Lights\_Out}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textasciigrave{}}\AttributeTok{countAssaults}\StringTok{\textasciigrave{}}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"dodgerblue"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Street Lights Out vs Assaults Count"}\NormalTok{,  }
+    \AttributeTok{x =} \StringTok{"Number of Street Lights Out"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Number of Assaults"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"Figure 3. Relationship between Street Lights Out and Assaults Count"}
+\NormalTok{  ) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_y\_continuous}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkgreen"}\NormalTok{),}
+    \AttributeTok{plot.caption =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkgray"}\NormalTok{),}
+    \AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"lightgray"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{),}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{plot.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{)}
+\NormalTok{  )}
+
+\FunctionTok{grid.arrange}\NormalTok{(plot1, plot2, plot3, plot4, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/scatterplots-1.pdf}
+
+\textbf{c.~Feature Engineering}
+
+First, we use nearest neighbor feature to check exposures by distance.
+By choosing k=3, the maps will show the \textbf{3 nearest neighboring
+points} and use those to calculate the proximity to certain risk
+factors.The maps below show four independent variables and the distance
+from each grid cell to its nearest variables each. We can see
+\textbf{most of the areas for all variables are in the lowest range of
+average distance}. For POD Cameras, it shows the least exposures are
+only on the most northern and southern part of Chicago. For Liquor
+retail and street lights out, the least exposure is in the most southern
+part of Chicago. For Metra Stops, the least exposure is when it is far
+from metra stops.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{st\_c }\OtherTok{\textless{}{-}}\NormalTok{ st\_coordinates}
+\NormalTok{st\_coid }\OtherTok{\textless{}{-}}\NormalTok{ st\_centroid}
+
+\NormalTok{vars\_net }\OtherTok{\textless{}{-}}
+\NormalTok{  vars\_net }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+      \AttributeTok{cctv.nn =}
+        \FunctionTok{nn\_function}\NormalTok{(}\FunctionTok{st\_c}\NormalTok{(}\FunctionTok{st\_coid}\NormalTok{(vars\_net)), }\FunctionTok{st\_c}\NormalTok{(cctv),}\DecValTok{3}\NormalTok{),}
+      \AttributeTok{Liquor\_Retail.nn =}
+        \FunctionTok{nn\_function}\NormalTok{(}\FunctionTok{st\_c}\NormalTok{(}\FunctionTok{st\_coid}\NormalTok{(vars\_net)), }\FunctionTok{st\_c}\NormalTok{(liquorRetail),}\DecValTok{3}\NormalTok{),}
+      \AttributeTok{Street\_Lights\_Out.nn =}
+        \FunctionTok{nn\_function}\NormalTok{(}\FunctionTok{st\_c}\NormalTok{(}\FunctionTok{st\_coid}\NormalTok{(vars\_net)), }\FunctionTok{st\_c}\NormalTok{(streetLightsOut),}\DecValTok{3}\NormalTok{),}
+      \AttributeTok{metraStops.nn =}
+        \FunctionTok{nn\_function}\NormalTok{(}\FunctionTok{st\_c}\NormalTok{(}\FunctionTok{st\_coid}\NormalTok{(vars\_net)), }\FunctionTok{st\_c}\NormalTok{(metraStops),}\DecValTok{3}\NormalTok{))}
+
+\NormalTok{vars\_net.long.nn }\OtherTok{\textless{}{-}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(vars\_net, }\FunctionTok{ends\_with}\NormalTok{(}\StringTok{".nn"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{gather}\NormalTok{(Variable, value, }\SpecialCharTok{{-}}\NormalTok{geometry)}
+
+\NormalTok{vars }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(vars\_net.long.nn}\SpecialCharTok{$}\NormalTok{Variable)}
+\NormalTok{mapList }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ vars)\{}
+\NormalTok{  mapList[[i]] }\OtherTok{\textless{}{-}} 
+    \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =} \FunctionTok{filter}\NormalTok{(vars\_net.long.nn, Variable }\SpecialCharTok{==}\NormalTok{ i), }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{value), }\AttributeTok{colour=}\ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{name=}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\NormalTok{i) }\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{()\}}
+
+\FunctionTok{do.call}\NormalTok{(grid.arrange,}\FunctionTok{c}\NormalTok{(mapList, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{, }\AttributeTok{top =} \StringTok{"Nearest Neighbor risk Factors by Fishnet"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/vars-1.pdf}
+
+Second, we use Euclidean Distance to the loop which means the distance
+to the city center of Chicago. The map also shows \textbf{the closer we
+are to the city center, the higher the exposure of crime we have.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{loopPoint }\OtherTok{\textless{}{-}}
+  \FunctionTok{filter}\NormalTok{(neighborhoods, name }\SpecialCharTok{==} \StringTok{"Loop"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_centroid}\NormalTok{()}
+
+\NormalTok{vars\_net}\SpecialCharTok{$}\NormalTok{loopDistance }\OtherTok{=}
+  \FunctionTok{st\_distance}\NormalTok{(}\FunctionTok{st\_centroid}\NormalTok{(vars\_net),loopPoint) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{as.numeric}\NormalTok{() }
+
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vars\_net, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ loopDistance), }\AttributeTok{color =} \ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_c}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{name =} \StringTok{"Distance to Loop (m)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Euclidean Distance to the Loop"}\NormalTok{, }
+       \AttributeTok{caption =} \StringTok{"Distance measured in meters"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"right"}\NormalTok{,}
+        \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/loop-1.pdf}
+
+Lastly, we use Police District and Neighborhoods data to be joined with
+the dependent and independent variables for regression model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{final\_net }\OtherTok{\textless{}{-}}
+  \FunctionTok{left\_join}\NormalTok{(crime\_net, }\FunctionTok{st\_drop\_geometry}\NormalTok{(vars\_net), }\AttributeTok{by=}\StringTok{"uniqueID"}\NormalTok{) }
+
+\NormalTok{policeDistricts }\OtherTok{\textless{}{-}} 
+  \FunctionTok{st\_read}\NormalTok{(}\StringTok{"https://data.cityofchicago.org/api/geospatial/fthy{-}xz3r?method=export\&format=GeoJSON"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\StringTok{\textquotesingle{}ESRI:102271\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{District =}\NormalTok{ dist\_num)}
+
+\NormalTok{final\_net }\OtherTok{\textless{}{-}}
+  \FunctionTok{st\_centroid}\NormalTok{(final\_net) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_join}\NormalTok{(dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(neighborhoods, name)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_join}\NormalTok{(dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(policeDistricts, District)) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{st\_drop\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{left\_join}\NormalTok{(dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(final\_net, geometry, uniqueID)) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{st\_sf}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{na.omit}\NormalTok{()}
+
+\FunctionTok{grid.arrange}\NormalTok{(}\AttributeTok{ncol=}\DecValTok{2}\NormalTok{,}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ final\_net, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{District)) }\SpecialCharTok{+}
+       \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Police Districts"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{()}\SpecialCharTok{+}
+      \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{),}
+
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ final\_net, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{name)) }\SpecialCharTok{+}
+       \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Neighborhoods"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{()}\SpecialCharTok{+}
+      \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/finalnet-1.pdf}
+
+\section{Local Moran's I}\label{local-morans-i}
+
+We use local moran's I to assess spatial autocorrelation at a local
+level and identify clusters or outliers in the spatial distribution of
+variables. This detects hotspots (clusters of high values), coldspots
+(clusters of low values), and spatial outliers (areas where a location
+has a value that is significantly different from its neighbors).
+
+The result for Local Moran's I map above display \textbf{hotspots
+(brighter color) meaning high crime rate surrounded by other high-crime
+areas, which is in the city center.} For P-Value map and significant
+hotspots, we will talk about that further.
+
+This information is useful to realize that a model needs to be
+generalizable therefore it can predict equally well in the hotspots and
+in the coldspots. We can see from \textbf{assaults count map and
+significant hotspots that they align which means a possible good
+generalization}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{final\_net.nb }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(}\FunctionTok{as\_Spatial}\NormalTok{(final\_net), }\AttributeTok{queen=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{final\_net.weights }\OtherTok{\textless{}{-}} \FunctionTok{nb2listw}\NormalTok{(final\_net.nb, }\AttributeTok{style=}\StringTok{"W"}\NormalTok{, }\AttributeTok{zero.policy=}\ConstantTok{TRUE}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(final\_net.weights, }\AttributeTok{zero.policy=}\ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{local\_morans }\OtherTok{\textless{}{-}} \FunctionTok{localmoran}\NormalTok{(final\_net}\SpecialCharTok{$}\NormalTok{countAssaults, final\_net.weights, }\AttributeTok{zero.policy=}\ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}                 \FunctionTok{as.data.frame}\NormalTok{()}
+
+\CommentTok{\# join local Moran\textquotesingle{}s I results to fishnet}
+\NormalTok{final\_net.localMorans }\OtherTok{\textless{}{-}} 
+  \FunctionTok{cbind}\NormalTok{(local\_morans, }\FunctionTok{as.data.frame}\NormalTok{(final\_net)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{st\_sf}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{Assaults\_Count =}\NormalTok{ countAssaults, }
+                \AttributeTok{Local\_Morans\_I =}\NormalTok{ Ii, }
+                \AttributeTok{P\_Value =} \StringTok{\textasciigrave{}}\AttributeTok{Pr(z != E(Ii))}\StringTok{\textasciigrave{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Significant\_Hotspots =} \FunctionTok{ifelse}\NormalTok{(P\_Value }\SpecialCharTok{\textless{}=} \FloatTok{0.001}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{gather}\NormalTok{(Variable, Value, }\SpecialCharTok{{-}}\NormalTok{geometry)}
+
+\NormalTok{vars }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(final\_net.localMorans}\SpecialCharTok{$}\NormalTok{Variable)}
+\NormalTok{varList }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ vars)\{}
+\NormalTok{  varList[[i]] }\OtherTok{\textless{}{-}} 
+    \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =} \FunctionTok{filter}\NormalTok{(final\_net.localMorans, Variable }\SpecialCharTok{==}\NormalTok{ i), }
+              \FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ Value), }\AttributeTok{colour=}\ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{name=}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\NormalTok{i) }\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{)\}}
+
+\FunctionTok{do.call}\NormalTok{(grid.arrange,}\FunctionTok{c}\NormalTok{(varList, }\AttributeTok{ncol =} \DecValTok{4}\NormalTok{, }\AttributeTok{top =} \StringTok{"Local Morans I statistics, Assaults"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/moransi-1.pdf}
+
+We distribute the significance which is shown by the p-value to 4
+different categories. For the p-value nearing 0.1, the significant
+hotspots increase. This means that \textbf{more hotspots are
+insignificant with the clusters and the observed local Moran's I
+statistic is likely due to random chance}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{final\_net.localMoransbypval }\OtherTok{\textless{}{-}} 
+  \FunctionTok{cbind}\NormalTok{(local\_morans, }\FunctionTok{as.data.frame}\NormalTok{(final\_net)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{st\_sf}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{Assaults\_Count =}\NormalTok{ countAssaults, }
+                \AttributeTok{Local\_Morans\_I =}\NormalTok{ Ii, }
+                \AttributeTok{P\_Value =} \StringTok{\textasciigrave{}}\AttributeTok{Pr(z != E(Ii))}\StringTok{\textasciigrave{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Significant\_Hotspots0.1 =} \FunctionTok{ifelse}\NormalTok{(P\_Value }\SpecialCharTok{\textless{}=} \FloatTok{0.1}\NormalTok{ , }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Significant\_Hotspots0.001 =} \FunctionTok{ifelse}\NormalTok{(P\_Value }\SpecialCharTok{\textless{}=} \FloatTok{0.001}\NormalTok{ , }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Significant\_Hotspots0.00001 =} \FunctionTok{ifelse}\NormalTok{(P\_Value }\SpecialCharTok{\textless{}=} \FloatTok{0.00001}\NormalTok{ , }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Significant\_Hotspots0.0000001 =} \FunctionTok{ifelse}\NormalTok{(P\_Value }\SpecialCharTok{\textless{}=} \FloatTok{0.0000001}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{gather}\NormalTok{(Variable, Value, }\SpecialCharTok{{-}}\NormalTok{geometry)}
+
+\NormalTok{final\_net.localMoransbypval }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(final\_net.localMoransbypval, }\FunctionTok{grepl}\NormalTok{(}\StringTok{"Significant\_Hotspots"}\NormalTok{, Variable)) }
+
+\NormalTok{custom\_labels }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Significant\_Hotspots0.1"} \OtherTok{=} \StringTok{"0.1"}\NormalTok{, }
+                   \StringTok{"Significant\_Hotspots0.001"} \OtherTok{=} \StringTok{"0.001"}\NormalTok{,}
+                   \StringTok{"Significant\_Hotspots0.00001"} \OtherTok{=} \StringTok{"0.00001"}\NormalTok{,}
+                   \StringTok{"Significant\_Hotspots0.0000001"} \OtherTok{=} \StringTok{"0.0000001"}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ final\_net.localMoransbypval, }
+              \FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ Value), }\AttributeTok{colour=}\ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{name=}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Assaults Hotspots of Varing Significance"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Variable, }\AttributeTok{ncol=}\DecValTok{4}\NormalTok{, }\AttributeTok{labeller =} \FunctionTok{labeller}\NormalTok{(}\AttributeTok{Variable =}\NormalTok{ custom\_labels))}\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{(}\AttributeTok{title\_size =} \DecValTok{14}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/sig-1.pdf}
+
+The map below shows average nearest neighbor distance from each cell
+centroid to its nearest significant cluster. We use only the significant
+hotspots with p-value less than 0.001. \textbf{The highest average
+distance} is only \textbf{in the most southern and northern part of the
+city} which \textbf{aligns} with ithaving \textbf{the least exposure of
+crime from nearest neighbor feature}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{final\_net }\OtherTok{\textless{}{-}}\NormalTok{ final\_net }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{assaultscount.isSig =} 
+           \FunctionTok{ifelse}\NormalTok{(local\_morans[,}\DecValTok{5}\NormalTok{] }\SpecialCharTok{\textless{}=} \FloatTok{0.001}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{assaultscount.isSig.dist =} 
+           \FunctionTok{nn\_function}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(}\FunctionTok{st\_centroid}\NormalTok{(final\_net)),}
+                       \FunctionTok{st\_coordinates}\NormalTok{(}\FunctionTok{st\_centroid}\NormalTok{(}\FunctionTok{filter}\NormalTok{(final\_net, }
+\NormalTok{                                           assaultscount.isSig }\SpecialCharTok{==} \DecValTok{1}\NormalTok{))), }
+                       \AttributeTok{k =} \DecValTok{1}\NormalTok{))}
+
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ final\_net, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{assaultscount.isSig.dist), }\AttributeTok{colour=}\ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{name=}\StringTok{"NN Distance"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Distance to highly significant assaults hotspots"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{mapTheme}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/sigmap-1.pdf}
+
+\section{Modeling and
+Cross-Validation}\label{modeling-and-cross-validation}
+
+We use geospatial risk modeling to predict future possible crime and
+cross-validation to get the most accurate model.
+
+\textbf{a. Choosing Models}
+
+I choose the model with removing one of the independent variables one by
+one and use cross-validation to count Mean Absolute Error (MAE).
+\textbf{The lowest the MAE, the better the model}.
+
+The result below shows t\textbf{he lowest MAE is interestingly when we
+remove the Liquor Retail variable}. Because the difference is not big
+enough, I choose to continue using the model with four independent
+variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reg.vars.full }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"cctv.nn"}\NormalTok{, }\StringTok{"Street\_Lights\_Out.nn"}\NormalTok{, }\StringTok{"Liquor\_Retail.nn"}\NormalTok{, }\StringTok{"metraStops.nn"}\NormalTok{, }\StringTok{"loopDistance"}\NormalTok{)}
+
+\NormalTok{reg.vars.no\_cctv }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(reg.vars.full, }\StringTok{"cctv.nn"}\NormalTok{)}
+\NormalTok{reg.vars.no\_street\_lights }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(reg.vars.full, }\StringTok{"Street\_Lights\_Out.nn"}\NormalTok{)}
+\NormalTok{reg.vars.no\_liquor }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(reg.vars.full, }\StringTok{"Liquor\_Retail.nn"}\NormalTok{)}
+\NormalTok{reg.vars.no\_metra }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(reg.vars.full, }\StringTok{"metraStops.nn"}\NormalTok{)}
+
+\NormalTok{models }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"Full Model"} \OtherTok{=}\NormalTok{ reg.vars.full,}
+  \StringTok{"No CCTV"} \OtherTok{=}\NormalTok{ reg.vars.no\_cctv,}
+  \StringTok{"No Street Lights"} \OtherTok{=}\NormalTok{ reg.vars.no\_street\_lights,}
+  \StringTok{"No Liquor Retail"} \OtherTok{=}\NormalTok{ reg.vars.no\_liquor,}
+  \StringTok{"No Metra Stops"} \OtherTok{=}\NormalTok{ reg.vars.no\_metra}
+\NormalTok{)}
+
+\NormalTok{model\_results }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\FunctionTok{names}\NormalTok{(models), }\ControlFlowTok{function}\NormalTok{(model\_name) \{}
+\NormalTok{  vars }\OtherTok{\textless{}{-}}\NormalTok{ models[[model\_name]]}
+\NormalTok{  model\_cv }\OtherTok{\textless{}{-}} \FunctionTok{crossValidate}\NormalTok{(}
+    \AttributeTok{dataset =}\NormalTok{ final\_net,}
+    \AttributeTok{id =} \StringTok{"name"}\NormalTok{,}
+    \AttributeTok{dependentVariable =} \StringTok{"countAssaults"}\NormalTok{,}
+    \AttributeTok{indVariables =}\NormalTok{ vars}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{cvID =}\NormalTok{ name, countAssaults, Prediction, geometry)}
+\NormalTok{  model\_summary }\OtherTok{\textless{}{-}}\NormalTok{ model\_cv }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Error =}\NormalTok{ Prediction }\SpecialCharTok{{-}}\NormalTok{ countAssaults) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{MAE =} \FunctionTok{mean}\NormalTok{(}\FunctionTok{abs}\NormalTok{(Error), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    )}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Model =}\NormalTok{ model\_name, }\AttributeTok{MAE =}\NormalTok{ model\_summary}\SpecialCharTok{$}\NormalTok{MAE))}
+\NormalTok{\})}
+
+\NormalTok{model\_results\_df }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, model\_results)}
+
+\NormalTok{model\_results\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Comparison of MAE for Different Models"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\AttributeTok{full\_width =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{b. Final Model and Accuracy}
+
+Using the final model with four independent variables, loop distance,
+and the average distance of significant hotspots, we cross-validate the
+model to see the accuracy of the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reg.vars }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"cctv.nn"}\NormalTok{, }\StringTok{"Street\_Lights\_Out.nn"}\NormalTok{, }\StringTok{"Liquor\_Retail.nn"}\NormalTok{,}
+              \StringTok{"metraStops.nn"}\NormalTok{, }\StringTok{"loopDistance"}\NormalTok{)}
+
+\NormalTok{reg.ss.vars }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"cctv.nn"}\NormalTok{, }\StringTok{"Street\_Lights\_Out.nn"}\NormalTok{, }\StringTok{"Liquor\_Retail.nn"}\NormalTok{,}
+                 \StringTok{"metraStops.nn"}\NormalTok{, }\StringTok{"loopDistance"}\NormalTok{, }\StringTok{"assaultscount.isSig"}\NormalTok{,}
+                 \StringTok{"assaultscount.isSig.dist"}\NormalTok{)}
+
+\NormalTok{reg.spatialCV }\OtherTok{\textless{}{-}} \FunctionTok{crossValidate}\NormalTok{(}
+  \AttributeTok{dataset =}\NormalTok{ final\_net,}
+  \AttributeTok{id =} \StringTok{"name"}\NormalTok{,}
+  \AttributeTok{dependentVariable =} \StringTok{"countAssaults"}\NormalTok{,}
+  \AttributeTok{indVariables =}\NormalTok{ reg.vars) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{cvID =}\NormalTok{ name, countAssaults, Prediction, geometry)}
+
+\NormalTok{reg.ss.spatialCV }\OtherTok{\textless{}{-}} \FunctionTok{crossValidate}\NormalTok{(}
+  \AttributeTok{dataset =}\NormalTok{ final\_net,}
+  \AttributeTok{id =} \StringTok{"name"}\NormalTok{,                           }
+  \AttributeTok{dependentVariable =} \StringTok{"countAssaults"}\NormalTok{,}
+  \AttributeTok{indVariables =}\NormalTok{ reg.ss.vars) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\AttributeTok{cvID =}\NormalTok{ name, countAssaults, Prediction, geometry)}
+
+
+\NormalTok{reg.summary }\OtherTok{\textless{}{-}} 
+  \FunctionTok{rbind}\NormalTok{(}
+    \FunctionTok{mutate}\NormalTok{(reg.spatialCV,    }\AttributeTok{Error =}\NormalTok{ Prediction }\SpecialCharTok{{-}}\NormalTok{ countAssaults,}
+                             \AttributeTok{Regression =} \StringTok{"Spatial LOGO{-}CV: Just Risk Factors"}\NormalTok{),}
+                             
+    \FunctionTok{mutate}\NormalTok{(reg.ss.spatialCV, }\AttributeTok{Error =}\NormalTok{ Prediction }\SpecialCharTok{{-}}\NormalTok{ countAssaults,}
+                             \AttributeTok{Regression =} \StringTok{"Spatial LOGO{-}CV: Spatial Process"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_sf}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+The errors are shown by Mean Error, Mean Absolute Error, and Standard
+Deviation of Mean Absolute Error. The histogram below shows the
+distribution of MAE for the cross-validation of just risk factors and
+the one with the spatial process. There is a difference between the two
+histogram that will show the importance of spatial process in this
+model. I will write further by the map and table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{error\_by\_reg\_and\_fold }\OtherTok{\textless{}{-}} 
+\NormalTok{  reg.summary }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Regression, cvID) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{summarize}\NormalTok{(}\AttributeTok{Mean\_Error =} \FunctionTok{mean}\NormalTok{(Prediction }\SpecialCharTok{{-}}\NormalTok{ countAssaults, }\AttributeTok{na.rm =}\NormalTok{ T),}
+              \AttributeTok{MAE =} \FunctionTok{mean}\NormalTok{(}\FunctionTok{abs}\NormalTok{(Mean\_Error), }\AttributeTok{na.rm =}\NormalTok{ T),}
+              \AttributeTok{SD\_MAE =} \FunctionTok{mean}\NormalTok{(}\FunctionTok{abs}\NormalTok{(Mean\_Error), }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{()}
+
+\NormalTok{error\_by\_reg\_and\_fold }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(MAE)) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{30}\NormalTok{, }\AttributeTok{colour=}\StringTok{"black"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"\#FDE725FF"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Regression) }\SpecialCharTok{+}  
+    \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{8}\NormalTok{, }\AttributeTok{by =} \DecValTok{1}\NormalTok{)) }\SpecialCharTok{+} 
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Distribution of MAE"}\NormalTok{, }\AttributeTok{subtitle =} \StringTok{"LOGO{-}CV"}\NormalTok{,}
+         \AttributeTok{x=}\StringTok{"Mean Absolute Error"}\NormalTok{, }\AttributeTok{y=}\StringTok{"Count"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{plotTheme}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/errors-1.pdf}
+
+The maps below show l\textbf{ower MAE for the model with spatial process
+which means better model} and the spatial feature plays an
+\textbf{important role} in the prediction.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{error\_by\_reg\_and\_fold }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{str\_detect}\NormalTok{(Regression, }\StringTok{"LOGO"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ MAE)) }\SpecialCharTok{+}
+    \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Regression) }\SpecialCharTok{+}
+    \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Assaults errors by LOGO{-}CV Regression"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{mapTheme}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/maperror-1.pdf}
+
+The table below also shows the mean of MAE and standard deviation of MAE
+for the model including spatial process are lower than the model with
+just risk factors. The \textbf{lower standard deviation} shows that the
+latter model is \textbf{more stable and reliable for predicting} despite
+any neighborhood conditions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{st\_drop\_geometry}\NormalTok{(error\_by\_reg\_and\_fold) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Regression) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{summarize}\NormalTok{(}\AttributeTok{Mean\_MAE =} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(MAE), }\DecValTok{2}\NormalTok{),}
+              \AttributeTok{SD\_MAE =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(MAE), }\DecValTok{2}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable\_styling}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\AttributeTok{full\_width =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{c.~Neighborhood Racial Context}
+
+Using ACS 5-year estimate data to get racial data of the neighborhood,
+we do regression with the two models from before. Shown in the table
+below, the mean errors in both regressions for non-white are minus which
+mean \textbf{the model is underestimating the number of assaults
+occurring in areas with non-white} majority. The model's predictions are
+generally lower than the actual observed values of assaults in these
+neighborhoods. This result shows another \textbf{bias} in the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tracts18 }\OtherTok{\textless{}{-}} 
+  \FunctionTok{get\_acs}\NormalTok{(}\AttributeTok{geography =} \StringTok{"tract"}\NormalTok{, }\AttributeTok{variables =} \FunctionTok{c}\NormalTok{(}\StringTok{"B01001\_001E"}\NormalTok{,}\StringTok{"B01001A\_001E"}\NormalTok{), }
+          \AttributeTok{year =} \DecValTok{2018}\NormalTok{, }\AttributeTok{state=}\DecValTok{17}\NormalTok{, }\AttributeTok{county=}\DecValTok{031}\NormalTok{, }\AttributeTok{geometry=}\NormalTok{T) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\StringTok{\textquotesingle{}ESRI:102271\textquotesingle{}}\NormalTok{)  }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(variable, estimate, GEOID) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{spread}\NormalTok{(variable, estimate) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{TotalPop =}\NormalTok{ B01001\_001,}
+         \AttributeTok{NumberWhites =}\NormalTok{ B01001A\_001) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{percentWhite =}\NormalTok{ NumberWhites }\SpecialCharTok{/}\NormalTok{ TotalPop,}
+         \AttributeTok{raceContext =} \FunctionTok{ifelse}\NormalTok{(percentWhite }\SpecialCharTok{\textgreater{}}\NormalTok{ .}\DecValTok{5}\NormalTok{, }\StringTok{"Majority\_White"}\NormalTok{, }\StringTok{"Majority\_Non\_White"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  .[neighborhoods,]}
+
+\NormalTok{reg.summary }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{str\_detect}\NormalTok{(Regression, }\StringTok{"LOGO"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_centroid}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{st\_join}\NormalTok{(tracts18) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{na.omit}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{st\_drop\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{group\_by}\NormalTok{(Regression, raceContext) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{summarize}\NormalTok{(}\AttributeTok{mean.Error =} \FunctionTok{mean}\NormalTok{(Error, }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{spread}\NormalTok{(raceContext, mean.Error) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Mean Error by neighborhood racial context"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+        \FunctionTok{kable\_styling}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\AttributeTok{full\_width =}\NormalTok{ F) }
+\end{Highlighting}
+\end{Shaded}
+
+\section{Kernel's Density and Model
+Prediction}\label{kernels-density-and-model-prediction}
+
+\textbf{a. Kernel's Density}
+
+Kernel's Density is another tool to show distribution of data. In this
+case, we use three different search radius (1000 ft, 1500 ft, and 2000
+ft) to see the density of the number of assaults in the city of Chicago.
+
+The maps below show more clustered hotspots within 1000 ft and less
+clustered hotspots within 2000 ft. These maps also show spatial pattern
+with a smaller radius highlighting localized hotspots, while a larger
+radius highlighting broader patterns and trends. This can help make
+decisions about \textbf{resource allocation and intervention
+strategies}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{assa\_ppp }\OtherTok{\textless{}{-}} \FunctionTok{as.ppp}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(assaults\_clipped), }\AttributeTok{W =} \FunctionTok{st\_bbox}\NormalTok{(final\_net))}
+\NormalTok{assa\_KD}\FloatTok{.1000} \OtherTok{\textless{}{-}}\NormalTok{ spatstat.explore}\SpecialCharTok{::}\FunctionTok{density.ppp}\NormalTok{(assa\_ppp, }\DecValTok{1000}\NormalTok{)}
+\NormalTok{assa\_KD}\FloatTok{.1500} \OtherTok{\textless{}{-}}\NormalTok{ spatstat.explore}\SpecialCharTok{::}\FunctionTok{density.ppp}\NormalTok{(assa\_ppp, }\DecValTok{1500}\NormalTok{)}
+\NormalTok{assa\_KD}\FloatTok{.2000} \OtherTok{\textless{}{-}}\NormalTok{ spatstat.explore}\SpecialCharTok{::}\FunctionTok{density.ppp}\NormalTok{(assa\_ppp, }\DecValTok{2000}\NormalTok{)}
+\NormalTok{assa\_KD.df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}\FunctionTok{rasterToPoints}\NormalTok{(}\FunctionTok{mask}\NormalTok{(}\FunctionTok{raster}\NormalTok{(assa\_KD}\FloatTok{.1000}\NormalTok{), }\FunctionTok{as}\NormalTok{(neighborhoods, }\StringTok{\textquotesingle{}Spatial\textquotesingle{}}\NormalTok{)))), }\AttributeTok{Legend =} \StringTok{"1000 Ft."}\NormalTok{),}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}\FunctionTok{rasterToPoints}\NormalTok{(}\FunctionTok{mask}\NormalTok{(}\FunctionTok{raster}\NormalTok{(assa\_KD}\FloatTok{.1500}\NormalTok{), }\FunctionTok{as}\NormalTok{(neighborhoods, }\StringTok{\textquotesingle{}Spatial\textquotesingle{}}\NormalTok{)))), }\AttributeTok{Legend =} \StringTok{"1500 Ft."}\NormalTok{),}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}\FunctionTok{rasterToPoints}\NormalTok{(}\FunctionTok{mask}\NormalTok{(}\FunctionTok{raster}\NormalTok{(assa\_KD}\FloatTok{.2000}\NormalTok{), }\FunctionTok{as}\NormalTok{(neighborhoods, }\StringTok{\textquotesingle{}Spatial\textquotesingle{}}\NormalTok{)))), }\AttributeTok{Legend =} \StringTok{"2000 Ft."}\NormalTok{)) }
+
+\NormalTok{assa\_KD.df}\SpecialCharTok{$}\NormalTok{Legend }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(assa\_KD.df}\SpecialCharTok{$}\NormalTok{Legend, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"1000 Ft."}\NormalTok{, }\StringTok{"1500 Ft."}\NormalTok{, }\StringTok{"2000 Ft."}\NormalTok{))}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{assa\_KD.df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{x, }\AttributeTok{y=}\NormalTok{y)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_raster}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{layer)) }\SpecialCharTok{+} 
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Legend) }\SpecialCharTok{+}
+  \FunctionTok{coord\_sf}\NormalTok{(}\AttributeTok{crs=}\FunctionTok{st\_crs}\NormalTok{(final\_net)) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{name=}\StringTok{"Density"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Kernel density with 3 different search radius"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{mapTheme}\NormalTok{(}\AttributeTok{title\_size =} \DecValTok{14}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/KD-1.pdf}
+
+This map shows the density of assaults in 2017 in 1000 ft radius. The
+\textbf{hotspots} \textbf{align} with the number of assaults in the
+areas, such as \textbf{city center, west Chicago, and South Chicago}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{as.data.frame}\NormalTok{(assa\_KD}\FloatTok{.1000}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"x"}\NormalTok{, }\StringTok{"y"}\NormalTok{), }\AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(final\_net)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{aggregate}\NormalTok{(., final\_net, mean) }\SpecialCharTok{\%\textgreater{}\%}
+   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+     \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{value)) }\SpecialCharTok{+}
+     \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =} \FunctionTok{sample\_n}\NormalTok{(assaults\_clipped, }\DecValTok{1500}\NormalTok{), }\AttributeTok{size =}\NormalTok{ .}\DecValTok{5}\NormalTok{) }\SpecialCharTok{+}
+     \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{name =} \StringTok{"Density"}\NormalTok{) }\SpecialCharTok{+}
+     \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Kernel density of 2017 Assaults"}\NormalTok{) }\SpecialCharTok{+}
+     \FunctionTok{mapTheme}\NormalTok{(}\AttributeTok{title\_size =} \DecValTok{14}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/mapkd-1.pdf}
+
+\textbf{b. Comparison with Model Prediction}
+
+Now, we compare the 2018 assaults data with the Model Prediction using
+2017 assaults data. Overall, \textbf{the highest risks (5th category)}
+are still in the three areas mentioned before: \textbf{the city center,
+west Chicago, and south Chicago}. The maps below show while there are
+similarities in a few areas, there are differences in many more areas.
+
+While the 2018 assaults show growing areas of higher risk, model
+prediction tends to show reduced highest risk areas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{assaults18 }\OtherTok{\textless{}{-}} 
+  \FunctionTok{read.socrata}\NormalTok{(}\StringTok{"https://data.cityofchicago.org/Public{-}Safety/Crimes{-}2018/3i3m{-}jwuy"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Primary.Type }\SpecialCharTok{==} \StringTok{"ASSAULT"} \SpecialCharTok{\&} 
+\NormalTok{         Description }\SpecialCharTok{==} \StringTok{"SIMPLE"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{x =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"[()]"}\NormalTok{, }\StringTok{""}\NormalTok{, Location)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{separate}\NormalTok{(x,}\AttributeTok{into=} \FunctionTok{c}\NormalTok{(}\StringTok{"Y"}\NormalTok{,}\StringTok{"X"}\NormalTok{), }\AttributeTok{sep=}\StringTok{","}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{X =} \FunctionTok{as.numeric}\NormalTok{(X),}
+         \AttributeTok{Y =} \FunctionTok{as.numeric}\NormalTok{(Y)) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  na.omit }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{, }\AttributeTok{agr =} \StringTok{"constant"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\StringTok{\textquotesingle{}ESRI:102271\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{distinct}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  .[fishnet,]}
+
+\NormalTok{assa\_KDE\_sum }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(assa\_KD}\FloatTok{.1000}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"x"}\NormalTok{, }\StringTok{"y"}\NormalTok{), }\AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(final\_net)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{aggregate}\NormalTok{(., final\_net, mean) }
+
+
+\NormalTok{kde\_breaks }\OtherTok{\textless{}{-}} \FunctionTok{classIntervals}\NormalTok{(assa\_KDE\_sum}\SpecialCharTok{$}\NormalTok{value, }
+                             \AttributeTok{n =} \DecValTok{5}\NormalTok{, }\StringTok{"fisher"}\NormalTok{)}
+
+
+\NormalTok{assa\_KDE\_sf }\OtherTok{\textless{}{-}}\NormalTok{ assa\_KDE\_sum }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{label =} \StringTok{"Kernel Density"}\NormalTok{,}
+         \AttributeTok{Risk\_Category =}\NormalTok{ classInt}\SpecialCharTok{::}\FunctionTok{findCols}\NormalTok{(kde\_breaks),}
+         \AttributeTok{Risk\_Category =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{5} \SpecialCharTok{\textasciitilde{}} \StringTok{"5th"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{4} \SpecialCharTok{\textasciitilde{}} \StringTok{"4th"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{"3rd"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\textasciitilde{}} \StringTok{"2nd"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \StringTok{"1st"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{cbind}\NormalTok{(}
+    \FunctionTok{aggregate}\NormalTok{(}
+\NormalTok{      dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(assaults18) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{assaCount =} \DecValTok{1}\NormalTok{), ., sum) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{assaCount =} \FunctionTok{replace\_na}\NormalTok{(assaCount, }\DecValTok{0}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(label, Risk\_Category, assaCount)}
+
+\NormalTok{ml\_breaks }\OtherTok{\textless{}{-}} \FunctionTok{classIntervals}\NormalTok{(reg.ss.spatialCV}\SpecialCharTok{$}\NormalTok{Prediction, }
+                             \AttributeTok{n =} \DecValTok{5}\NormalTok{, }\StringTok{"fisher"}\NormalTok{)}
+\NormalTok{assa\_risk\_sf }\OtherTok{\textless{}{-}}
+\NormalTok{  reg.ss.spatialCV }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{label =} \StringTok{"Risk Predictions"}\NormalTok{,}
+         \AttributeTok{Risk\_Category =}\NormalTok{classInt}\SpecialCharTok{::}\FunctionTok{findCols}\NormalTok{(ml\_breaks),}
+         \AttributeTok{Risk\_Category =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{5} \SpecialCharTok{\textasciitilde{}} \StringTok{"5th"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{4} \SpecialCharTok{\textasciitilde{}} \StringTok{"4th"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{"3rd"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\textasciitilde{}} \StringTok{"2nd"}\NormalTok{,}
+\NormalTok{           Risk\_Category }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \StringTok{"1st"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{cbind}\NormalTok{(}
+    \FunctionTok{aggregate}\NormalTok{(}
+\NormalTok{      dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(assaults18) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{assaCount =} \DecValTok{1}\NormalTok{), ., sum) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{mutate}\NormalTok{(}\AttributeTok{assaCount =} \FunctionTok{replace\_na}\NormalTok{(assaCount, }\DecValTok{0}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(label,Risk\_Category, assaCount)}
+
+\FunctionTok{rbind}\NormalTok{(assa\_KDE\_sf, assa\_risk\_sf) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{na.omit}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{gather}\NormalTok{(Variable, Value, }\SpecialCharTok{{-}}\NormalTok{label, }\SpecialCharTok{{-}}\NormalTok{Risk\_Category, }\SpecialCharTok{{-}}\NormalTok{geometry) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ Risk\_Category), }\AttributeTok{colour =} \ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =} \FunctionTok{sample\_n}\NormalTok{(assaults18, }\DecValTok{3000}\NormalTok{), }\AttributeTok{size =}\NormalTok{ .}\DecValTok{5}\NormalTok{, }\AttributeTok{colour =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{label, ) }\SpecialCharTok{+}
+    \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{discrete =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Comparison of Kernel Density and Risk Predictions"}\NormalTok{,}
+         \AttributeTok{subtitle=}\StringTok{"2018 assaults; 2017 assaults risk predictions"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{mapTheme}\NormalTok{(}\AttributeTok{title\_size =} \DecValTok{14}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/2018assa-1.pdf}
+
+The graph below shows that \textbf{the prediction is not very useful for
+the highest and second-highest risk because it fails to predict} that
+the assaults will be higher rather than lower. The failure to predict
+higher assaults in these areas means a need for refining the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rbind}\NormalTok{(assa\_KDE\_sf, assa\_risk\_sf) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_drop\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{na.omit}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{gather}\NormalTok{(Variable, Value, }\SpecialCharTok{{-}}\NormalTok{label, }\SpecialCharTok{{-}}\NormalTok{Risk\_Category) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(label, Risk\_Category) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{countAssaults =} \FunctionTok{sum}\NormalTok{(Value)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(label) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Pcnt\_of\_test\_set\_crimes =}\NormalTok{ countAssaults }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(countAssaults)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(Risk\_Category,Pcnt\_of\_test\_set\_crimes)) }\SpecialCharTok{+}
+      \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{label), }\AttributeTok{position=}\StringTok{"dodge"}\NormalTok{, }\AttributeTok{stat=}\StringTok{"identity"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{scale\_fill\_viridis}\NormalTok{(}\AttributeTok{option =} \StringTok{"plasma"}\NormalTok{, }\AttributeTok{discrete =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{name =} \StringTok{"Model"}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Risk prediction vs. Kernel density, 2018 assaults"}\NormalTok{,}
+           \AttributeTok{y =} \StringTok{"\% of Test Set Assaults (per model)"}\NormalTok{,}
+           \AttributeTok{x =} \StringTok{"Risk Category"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{vjust =} \FloatTok{0.5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Indriaty_TututHW3_files/figure-latex/kdgraph-1.pdf}
+
+\section{Conclusion}\label{conclusion}
+
+To conclude, I \textbf{do not recommend using the algorithm as it is}
+because it appears to fail predicting the increase assaults in the
+highest and second-highest risk areas in Chicago City. But, I
+\textbf{recommend using the modeling process.} The room for improving
+the model is still possible with adding or stronger-correlation
+independent variables or changing the existing ones here. Even though
+along the way, I \textbf{find some reliability and good generalization
+in some variables}. This still is not enough to create a useful
+prediction modeling.
+
+\textbf{Simple Assaults} as the chosen outcomes also is not an easy
+category of crimes to predict because of the \textbf{quite high level of
+bias in data}. But this still is important because this assault type is
+the \textbf{highest crime reports} in Chicago. \textbf{Better and
+stronger variables} need to be included in the modeling to create
+reliable prediction. Some variable ideas to add to probably improve the
+modeling in the future are religious locations, recreational places,
+education level, and income level.
+
+\end{document}
